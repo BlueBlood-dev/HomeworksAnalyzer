@@ -3,9 +3,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace KysectAcademyTask.FileComparer
 {
-    public class ConfigReader
+    public class TwoPathsReader : IReader
     {
-        public FileController Read()
+        public IController Read()
         {
             IConfigurationRoot? config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json").Build();
