@@ -14,7 +14,7 @@ namespace KysectAcademyTask.FileComparer
             IConfigurationSection
                 configurationSection =
                     config.GetSection("DirectoryController"); //main sections which includes subsections
-            List<string> compAlgo = configurationSection.GetValue<List<string>>("ComparationAlgotihms") ??
+            string compAlgo = configurationSection.GetValue<string>("ComparationAlgotihms") ??
                                     throw new ArgumentNullException();
             string inputDirectory = configurationSection.GetValue<string>("InputDirectoryPath") ??
                                     throw new ArgumentNullException();
