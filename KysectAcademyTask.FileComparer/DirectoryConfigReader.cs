@@ -1,43 +1,126 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace KysectAcademyTask.FileComparer
 {
     public class DirectoryConfigReader : IReader
     {
+
+        private List<string> GetBlackList(IConfigurationSection configurationSection)
+        {
+           IEnumerable<IConfigurationSection> children = configurationSection.GetSection("BlackList").GetChildren();
+           List<string> list = new List<string>();
+           foreach (IConfigurationSection variable in children)
+           {
+               if (variable.Value is not null)
+               {
+                   list.Add(variable.Value);
+               }
+           }
+
+           return list ?? throw new ArgumentNullException($"black list is empty");
+        }
+        
+        
+        private List<string> GetWhiteList(IConfigurationSection configurationSection)
+        {
+            IEnumerable<IConfigurationSection> children = configurationSection.GetSection("WhiteList").GetChildren();
+            List<string> list = new List<string>();
+            foreach (IConfigurationSection variable in children)
+            {
+                if (variable.Value is not null)
+                {
+                    list.Add(variable.Value);
+                }
+            }
+
+            return list ?? throw new ArgumentNullException($"white list is empty");
+        }
+
+        private string GetInputPath(IConfigurationSection configurationSection)
+        {
+            return configurationSection.GetValue<string>("InputDirectoryPath") ??
+                   throw new ArgumentNullException($"input path is null");
+        }
+
+        private string GetAlgo(IConfigurationSection configurationSection)
+        {
+            return configurationSection.GetValue<string>("ComparationAlgotihms") ??
+                   throw new ArgumentNullException($"algo is null");
+        }
+
+        private string GetOutput(IConfigurationSection configurationSection)
+        {
+            return configurationSection.GetValue<string>("Path") ??
+                   throw new ArgumentNullException($"output path is null");
+        }
+
+        private string GetType(IConfigurationSection configurationSection)
+        {
+            return configurationSection.GetValue<string>("Type") ?? throw new ArgumentNullException($"Type is null");
+        }
+
+        private List<string> GetExtensionsWhiteList(IConfigurationSection configurationSection)
+        {
+            IEnumerable<IConfigurationSection> children = configurationSection.GetSection("ExtensionsWhiteList").GetChildren();
+            List<string> list = new List<string>();
+            foreach (IConfigurationSection variable in children)
+            {
+                if (variable.Value is not null)
+                {
+                    list.Add(variable.Value);
+                }
+            }
+
+            return list ?? throw new ArgumentNullException($"extensions white  list is empty");
+        }
+
+        private List<string> GetDirectoryBlackList(IConfigurationSection configurationSection)
+        {
+            IEnumerable<IConfigurationSection> children = configurationSection.GetSection("DirectoryBlackList").GetChildren();
+            List<string> list = new List<string>();
+            foreach (IConfigurationSection variable in children)
+            {
+                if (variable.Value is not null)
+                {
+                    list.Add(variable.Value);
+                }
+            }
+
+            return list ?? throw new ArgumentNullException($"directory black list is empty");
+        }
+
+
         public IController Read()
         {
             IConfigurationRoot? config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json").Build();
 
-            IConfigurationSection
-                configurationSection =
-                    config.GetSection("DirectoryController"); //main sections which includes subsections
-            string compAlgo = configurationSection.GetValue<string>("ComparationAlgotihms") ??
-                                    throw new ArgumentNullException();
-            string inputDirectory = configurationSection.GetValue<string>("InputDirectoryPath") ??
-                                    throw new ArgumentNullException();
+            IConfigurationSection section = config.GetSection("InputAndPath") ??
+                                            throw new ArgumentException("there is no such section");
+            string inputPath = GetInputPath(section);
+            string algo = GetAlgo(section);
 
-            IConfiguration reportSection = configurationSection.GetSection("Report");
-            string path = reportSection.GetValue<string>("Path") ?? throw new ArgumentNullException();
-            string type = reportSection.GetValue<string>("Type") ?? throw new ArgumentNullException();
+            section = config.GetSection("Report");
+            string output = GetOutput(section);
+            string typeOfOutput = GetType(section);
+            
+            section = config.GetSection("AuthorFilters") ??
+                      throw new ArgumentException("AuthorFilter doesn't exist");
+            
+            List<string> whiteList = GetWhiteList(section);
+            List<string> blackList = GetBlackList(section);
 
-            IConfiguration fileFiltersSection = configurationSection.GetSection("FileFilters");
-            List<string> extensionsWhiteList = fileFiltersSection.GetValue<List<string>>("ExtensionsWhiteList") ??
-                                               throw new ArgumentNullException();
-            List<string> directoryBlackList = fileFiltersSection.GetValue<List<string>>("DirectoryBlackList") ??
-                                              throw new ArgumentNullException();
+            section = config.GetSection("FileFilters") ?? throw new ArgumentException("FileFilters");
 
-            IConfiguration authorFiltersSection = configurationSection.GetSection("AuthorFilters");
-            List<string> whiteList = authorFiltersSection.GetValue<List<string>>("WhiteList") ??
-                                     throw new ArgumentNullException();
-
-            List<string> blackList = authorFiltersSection.GetValue<List<string>>("BlackList") ??
-                                     throw new ArgumentNullException();
+            List<string> extensionsWhiteList = GetExtensionsWhiteList(section);
+            List<string> directoryBlackList = GetDirectoryBlackList(section);
 
 
-            return new DirectoryController(compAlgo, inputDirectory, path, type, extensionsWhiteList,
+
+            return new DirectoryController(algo, inputPath, output, typeOfOutput, extensionsWhiteList,
                 directoryBlackList, whiteList, blackList);
         }
     }

@@ -28,7 +28,7 @@ namespace KysectAcademyTask.FileComparer
             ArgumentNullException.ThrowIfNull(directoryBlackList);
             ArgumentNullException.ThrowIfNull(authorWhiteList);
             ArgumentNullException.ThrowIfNull(authorBlackList);
-            
+
             ComparingAlgo = comparingAlgo;
             InputPath = inputPath;
             OutputPath = outputPath;
@@ -66,37 +66,30 @@ namespace KysectAcademyTask.FileComparer
         }
 
 
-        private void EveryTaskComparing()
+        void RemoveBlackListAuthors(List<Submit> submits)
         {
-            for (int i = 0; i < AuthorWhiteList.Count; i++)
+            List<int> toDeleteElements = new List<int>();
+            for (int i = 0; i < submits.Count; i++)
             {
-                
-            }   
-        }
+                if (AuthorBlackList.Contains(submits[i].StudentName))
+                {
+                    toDeleteElements.Add(i);
+                }
+            }
 
-        private void SingleTaskComparing()
-        {
-             
+            foreach (int index in toDeleteElements)
+            {
+                submits.RemoveAt(index);
+            }
         }
 
 
         public void CompareFiles()
         {
-            Console.WriteLine("Do you want to get a comparing result by the only one task? Y/N");
-            string input = Console.ReadLine() ?? throw new ArgumentNullException();
-
-            if (input.ToLower() == "y")
-            {
-                SingleTaskComparing();
-            }
-            else if (input.ToLower() == "n")
-            {
-                EveryTaskComparing();
-            }
-            else
-            {
-                throw new ArgumentException("there is no such option");
-            }
+            List<Submit> submits = new DirectoryResearcher().Research(InputPath, DirectoryBlackList) ??
+                                   throw new ArgumentNullException($"no submits in provided directory");
+            RemoveBlackListAuthors(submits);
+            
         }
     }
 }
