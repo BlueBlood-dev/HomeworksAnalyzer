@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace KysectAcademyTask.FileComparer
 {
@@ -18,13 +19,13 @@ namespace KysectAcademyTask.FileComparer
             List<Submit> list = new List<Submit>();
             DirectoryInfo groups = new DirectoryInfo(inputPath);
 
-            foreach (var group in groups.GetDirectories())
+            foreach (DirectoryInfo group in groups.GetDirectories())
             {
-                foreach (var students in group.GetDirectories())
+                foreach (DirectoryInfo students in group.GetDirectories())
                 {
-                    foreach (var homeworks in students.GetDirectories())
+                    foreach (DirectoryInfo homeworks in students.GetDirectories())
                     {
-                        foreach (var submits in homeworks.GetDirectories())
+                        foreach (DirectoryInfo submits in homeworks.GetDirectories())
                         {
                             if (CheckIfDirectoryNotIgnored(directoryBlackList, students.Name, group.Name,
                                 homeworks.Name, submits.Name))
@@ -33,7 +34,6 @@ namespace KysectAcademyTask.FileComparer
                     }
                 }
             }
-
             return list;
         }
     }

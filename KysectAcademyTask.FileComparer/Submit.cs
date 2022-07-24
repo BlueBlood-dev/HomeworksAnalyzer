@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace KysectAcademyTask.FileComparer
+﻿namespace KysectAcademyTask.FileComparer
 {
     public class Submit
     {

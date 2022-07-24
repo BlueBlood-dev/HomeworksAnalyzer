@@ -6,6 +6,7 @@
         {
              IController directoryController = new DirectoryConfigReader().Read();
              directoryController.CompareFiles();
+             
         }
     }
 }

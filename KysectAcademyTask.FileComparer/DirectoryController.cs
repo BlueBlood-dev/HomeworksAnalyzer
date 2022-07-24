@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+using System.IO;
 
 namespace KysectAcademyTask.FileComparer
 {
@@ -44,7 +43,7 @@ namespace KysectAcademyTask.FileComparer
             switch (ComparingAlgo.ToLower())
             {
                 case "multitude algo":
-                    return new Comparator();
+                    return new MultitudeComparator();
                 default:
                     throw new ArgumentException("there is no such algo");
             }
@@ -57,16 +56,16 @@ namespace KysectAcademyTask.FileComparer
                 case "json":
                     return new JsonWriter();
                 case "console":
-                    throw new NotImplementedException();
-                case "file":
-                    throw new NotImplementedException();
+                    return new ConsoleWriter();
+                case "txt":
+                    return new FileWriter();
             }
 
             throw new InvalidOperationException();
         }
 
 
-        void RemoveBlackListAuthors(List<Submit> submits)
+        private void RemoveBlackListAuthors(List<Submit> submits)
         {
             List<int> toDeleteElements = new List<int>();
             for (int i = 0; i < submits.Count; i++)
@@ -83,13 +82,68 @@ namespace KysectAcademyTask.FileComparer
             }
         }
 
+        private string GetSubmitPath(Submit submit)
+        {
+            return InputPath + "\\" + submit.GroupName + "\\" + submit.StudentName + "\\" + submit.HomeworkName + "\\" +
+                   submit.SubmitName;
+        }
+
+
+        private List<Submit> GetWhiteListSubmits(List<Submit> submits)
+        {
+            List<Submit> whiteSubmits = new();
+            foreach (Submit submit in submits)
+            {
+                if (AuthorWhiteList.Contains(submit.StudentName))
+                {
+                    whiteSubmits.Add(submit);
+                }
+            }
+
+            return whiteSubmits;
+        }
+
+        private void CompareSubmits(Submit first, Submit second, IWriter writer, IComparator comparator)
+        {
+            DirectoryInfo firstSubmitInfo = new(GetSubmitPath(first));
+            DirectoryInfo secondSubmitInfo = new(GetSubmitPath(second));
+            foreach (FileInfo file1 in firstSubmitInfo.GetFiles())
+            {
+                foreach (FileInfo file2 in secondSubmitInfo.GetFiles())
+                {
+                    if (file1.Extension.Equals(file2.Extension))
+                    {
+                        writer.Write(OutputPath, file1.FullName, file2.FullName,
+                            comparator.Compare(file1.FullName, file2.FullName));
+                    }
+                }
+            }
+        }
+
 
         public void CompareFiles()
         {
             List<Submit> submits = new DirectoryResearcher().Research(InputPath, DirectoryBlackList) ??
                                    throw new ArgumentNullException($"no submits in provided directory");
             RemoveBlackListAuthors(submits);
-            
+            IWriter writer = ChooseTheOutputType();
+            IComparator comparator = ChooseTheComparingAlgo();
+            List<Submit> whiteSubmits = GetWhiteListSubmits(submits);
+            int amountOfCmp = submits.Count * whiteSubmits.Count;
+            int counter = 1;
+            foreach (Submit whsubmit in whiteSubmits)
+            {
+                foreach (Submit submit in submits)
+                {
+                    if (whsubmit.HomeworkName.Equals(submit.HomeworkName) &&
+                        !whsubmit.StudentName.Equals(submit.StudentName))
+                    {
+                        CompareSubmits(whsubmit, submit, writer, comparator);
+                    }
+
+                    Console.WriteLine($"{counter++}\\{amountOfCmp}");
+                }
+            }
         }
     }
 }
