@@ -94,7 +94,7 @@ namespace KysectAcademyTask.FileComparer
 
         public IController Read()
         {
-            IConfigurationRoot? config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            IConfigurationRoot config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json").Build();
 
             IConfigurationSection section = config.GetSection("InputAndPath") ??
