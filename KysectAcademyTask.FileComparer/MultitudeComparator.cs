@@ -9,7 +9,7 @@ namespace KysectAcademyTask.FileComparer
         public double Compare(string sourceFile, string targetFile)
         {
             string[] linesInSource = File.ReadAllLines(sourceFile);
-            IEnumerable<string>? difference = linesInSource.Except(File.ReadAllLines(targetFile));
+            IEnumerable<string> difference = linesInSource.Except(File.ReadAllLines(targetFile));
             return (double) (linesInSource.Count() - difference.Count()) / linesInSource.Length * 100;
         }
     }
