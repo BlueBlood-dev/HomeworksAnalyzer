@@ -26,7 +26,7 @@ namespace KysectAcademyTask.FileComparer
         public void CompareFiles()
         {
             string[] files = Directory.GetFiles(InputPath);
-            Comparator cmp = new Comparator();
+            MultitudeComparator cmp = new MultitudeComparator();
             FileWriter fileWriter = new FileWriter();
             for (int i = 0; i < files.Length; i++)
             for (int j = i + 1; j < files.Length; j++)

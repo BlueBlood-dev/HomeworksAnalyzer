@@ -1,6 +1,6 @@
 ﻿namespace KysectAcademyTask.FileComparer
 {
-    public class Comparator : IComparator
+    public class MultitudeComparator : IComparator
     {
         public double Compare(string sourceFile, string targetFile)
         {
