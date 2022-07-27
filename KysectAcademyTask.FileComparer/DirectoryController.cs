@@ -8,7 +8,7 @@ namespace KysectAcademyTask.FileComparer
     {
         private IComparator Comparator { get; }
         private IWriter Writer { get; }
-        private string InputPath { get; } 
+        private string InputPath { get; }
         private string OutputPath { get; }
         private List<string> ExtensionWhiteList { get; }
         private List<string> DirectoryBlackList { get; }
@@ -44,26 +44,6 @@ namespace KysectAcademyTask.FileComparer
             return InputPath + "\\" + submit.GroupName + "\\" + submit.StudentName + "\\" + submit.HomeworkName + "\\" +
                    submit.SubmitName;
         }
-
-
-        private void CompareSubmits(Submit first, Submit second)
-        {
-            DirectoryInfo firstSubmitInfo = new(GetSubmitPath(first));
-            DirectoryInfo secondSubmitInfo = new(GetSubmitPath(second));
-            foreach (FileInfo file1 in firstSubmitInfo.GetFiles())
-            {
-                foreach (FileInfo file2 in secondSubmitInfo.GetFiles())
-                {
-                    if (file1.Extension.Equals(file2.Extension))
-                    {
-                        Writer.Write(OutputPath, file1.FullName, file2.FullName,
-                            Comparator.Compare(file1.FullName, file2.FullName));
-                    }
-                }
-            }
-        }
-
-
         public void CompareFiles()
         {
             List<Submit> submits = new DirectoryResearcher().Research(InputPath, DirectoryBlackList) ??
@@ -71,6 +51,7 @@ namespace KysectAcademyTask.FileComparer
             IFilter filter = new WhiteAndBlackListFilter();
             filter.GetSubmitsWithoutIgnoredStudents(submits, AuthorBlackList);
             List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, AuthorWhiteList);
+            SubmitsComparer comparer = new();
 
             int amountOfCmp = submits.Count * whiteSubmits.Count;
             int counter = 1;
@@ -81,7 +62,8 @@ namespace KysectAcademyTask.FileComparer
                     if (whsubmit.HomeworkName.Equals(submit.HomeworkName) &&
                         !whsubmit.StudentName.Equals(submit.StudentName))
                     {
-                        CompareSubmits(whsubmit, submit);
+                        comparer.CompareSubmits(whsubmit, submit, new(GetSubmitPath(whsubmit)),
+                            new(GetSubmitPath(submit)), Writer, Comparator, OutputPath);
                     }
 
                     Console.WriteLine($"{counter++}\\{amountOfCmp}");
