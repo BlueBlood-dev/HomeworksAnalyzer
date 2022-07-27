@@ -55,14 +55,14 @@ namespace KysectAcademyTask.FileComparer
 
             int amountOfCmp = submits.Count * whiteSubmits.Count;
             int counter = 1;
-            foreach (Submit whsubmit in whiteSubmits)
+            foreach (Submit whSubmit in whiteSubmits)
             {
                 foreach (Submit submit in submits)
                 {
-                    if (whsubmit.HomeworkName.Equals(submit.HomeworkName) &&
-                        !whsubmit.StudentName.Equals(submit.StudentName))
+                    if (whSubmit.HomeworkName.Equals(submit.HomeworkName) &&
+                        !whSubmit.StudentName.Equals(submit.StudentName))
                     {
-                        comparer.CompareSubmits(whsubmit, submit, new(GetSubmitPath(whsubmit)),
+                        comparer.CompareSubmits(whSubmit, submit, new(GetSubmitPath(whSubmit)),
                             new(GetSubmitPath(submit)), Writer, Comparator, OutputPath);
                     }
 
