@@ -63,24 +63,7 @@ namespace KysectAcademyTask.FileComparer
 
             throw new InvalidOperationException();
         }
-
-
-        private void RemoveBlackListAuthors(List<Submit> submits)
-        {
-            List<int> toDeleteElements = new List<int>();
-            for (int i = 0; i < submits.Count; i++)
-            {
-                if (AuthorBlackList.Contains(submits[i].StudentName))
-                {
-                    toDeleteElements.Add(i);
-                }
-            }
-
-            foreach (int index in toDeleteElements)
-            {
-                submits.RemoveAt(index);
-            }
-        }
+        
 
         private string GetSubmitPath(Submit submit)
         {
@@ -88,21 +71,7 @@ namespace KysectAcademyTask.FileComparer
                    submit.SubmitName;
         }
 
-
-        private List<Submit> GetWhiteListSubmits(List<Submit> submits)
-        {
-            List<Submit> whiteSubmits = new();
-            foreach (Submit submit in submits)
-            {
-                if (AuthorWhiteList.Contains(submit.StudentName))
-                {
-                    whiteSubmits.Add(submit);
-                }
-            }
-
-            return whiteSubmits;
-        }
-
+        
         private void CompareSubmits(Submit first, Submit second, IWriter writer, IComparator comparator)
         {
             DirectoryInfo firstSubmitInfo = new(GetSubmitPath(first));
@@ -125,10 +94,12 @@ namespace KysectAcademyTask.FileComparer
         {
             List<Submit> submits = new DirectoryResearcher().Research(InputPath, DirectoryBlackList) ??
                                    throw new ArgumentNullException($"no submits in provided directory");
-            RemoveBlackListAuthors(submits);
             IWriter writer = ChooseTheOutputType();
             IComparator comparator = ChooseTheComparingAlgo();
-            List<Submit> whiteSubmits = GetWhiteListSubmits(submits);
+            IFilter filter = new WhiteAndBlackListFilter();
+            filter.GetSubmitsWithoutIgnoredStudents(submits, AuthorBlackList);
+            List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, AuthorWhiteList);
+            
             int amountOfCmp = submits.Count * whiteSubmits.Count;
             int counter = 1;
             foreach (Submit whsubmit in whiteSubmits)

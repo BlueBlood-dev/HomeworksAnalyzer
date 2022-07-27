@@ -96,13 +96,14 @@ namespace KysectAcademyTask.FileComparer
         {
             IConfigurationRoot config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json").Build();
-
             IConfigurationSection section = config.GetSection("InputAndPath") ??
                                             throw new ArgumentException("there is no such section");
+            
             string inputPath = GetInputPath(section);
             string algo = GetAlgo(section);
 
             section = config.GetSection("Report");
+            
             string output = GetOutput(section);
             string typeOfOutput = GetType(section);
             
