@@ -6,10 +6,10 @@ namespace KysectAcademyTask.FileComparer
 {
     public class DirectoryController : IController
     {
-        private string ComparingAlgo { get; }
-        private string InputPath { get; }
+        private IComparator Comparator { get; }
+        private IWriter Writer { get; }
+        private string InputPath { get; } 
         private string OutputPath { get; }
-        private string TypeOfOutput { get; }
         private List<string> ExtensionWhiteList { get; }
         private List<string> DirectoryBlackList { get; }
         private List<string> AuthorWhiteList { get; }
@@ -28,42 +28,16 @@ namespace KysectAcademyTask.FileComparer
             ArgumentNullException.ThrowIfNull(authorWhiteList);
             ArgumentNullException.ThrowIfNull(authorBlackList);
 
-            ComparingAlgo = comparingAlgo;
+            ISelector selector = new AlgoAndOutputSelector();
+            Comparator = selector.ChooseTheComparingAlgo(comparingAlgo);
+            Writer = selector.ChooseTheOutputType(typeOfOutput);
             InputPath = inputPath;
             OutputPath = outputPath;
-            TypeOfOutput = typeOfOutput;
             ExtensionWhiteList = extensionWhiteList;
             DirectoryBlackList = directoryBlackList;
             AuthorWhiteList = authorWhiteList;
             AuthorBlackList = authorBlackList;
         }
-
-        private IComparator ChooseTheComparingAlgo()
-        {
-            switch (ComparingAlgo.ToLower())
-            {
-                case "multitude algo":
-                    return new MultitudeComparator();
-                default:
-                    throw new ArgumentException("there is no such algo");
-            }
-        }
-
-        private IWriter ChooseTheOutputType()
-        {
-            switch (TypeOfOutput.ToLower())
-            {
-                case "json":
-                    return new JsonWriter();
-                case "console":
-                    return new ConsoleWriter();
-                case "txt":
-                    return new FileWriter();
-            }
-
-            throw new InvalidOperationException();
-        }
-        
 
         private string GetSubmitPath(Submit submit)
         {
@@ -71,8 +45,8 @@ namespace KysectAcademyTask.FileComparer
                    submit.SubmitName;
         }
 
-        
-        private void CompareSubmits(Submit first, Submit second, IWriter writer, IComparator comparator)
+
+        private void CompareSubmits(Submit first, Submit second)
         {
             DirectoryInfo firstSubmitInfo = new(GetSubmitPath(first));
             DirectoryInfo secondSubmitInfo = new(GetSubmitPath(second));
@@ -82,8 +56,8 @@ namespace KysectAcademyTask.FileComparer
                 {
                     if (file1.Extension.Equals(file2.Extension))
                     {
-                        writer.Write(OutputPath, file1.FullName, file2.FullName,
-                            comparator.Compare(file1.FullName, file2.FullName));
+                        Writer.Write(OutputPath, file1.FullName, file2.FullName,
+                            Comparator.Compare(file1.FullName, file2.FullName));
                     }
                 }
             }
@@ -94,12 +68,10 @@ namespace KysectAcademyTask.FileComparer
         {
             List<Submit> submits = new DirectoryResearcher().Research(InputPath, DirectoryBlackList) ??
                                    throw new ArgumentNullException($"no submits in provided directory");
-            IWriter writer = ChooseTheOutputType();
-            IComparator comparator = ChooseTheComparingAlgo();
             IFilter filter = new WhiteAndBlackListFilter();
             filter.GetSubmitsWithoutIgnoredStudents(submits, AuthorBlackList);
             List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, AuthorWhiteList);
-            
+
             int amountOfCmp = submits.Count * whiteSubmits.Count;
             int counter = 1;
             foreach (Submit whsubmit in whiteSubmits)
@@ -109,7 +81,7 @@ namespace KysectAcademyTask.FileComparer
                     if (whsubmit.HomeworkName.Equals(submit.HomeworkName) &&
                         !whsubmit.StudentName.Equals(submit.StudentName))
                     {
-                        CompareSubmits(whsubmit, submit, writer, comparator);
+                        CompareSubmits(whsubmit, submit);
                     }
 
                     Console.WriteLine($"{counter++}\\{amountOfCmp}");
