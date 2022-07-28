@@ -4,7 +4,7 @@
     {
         public static void Main(string[] args)
         {
-             new DirectoryConfigReader().Read().CompareFiles();
+            new DirectoryConfigReader().Read().CompareFiles();
         }
     }
 }
