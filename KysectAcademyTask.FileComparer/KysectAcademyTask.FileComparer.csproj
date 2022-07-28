@@ -21,4 +21,8 @@
       </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\KysectAcademyTask.DatabaseLayer\KysectAcademyTask.DatabaseLayer.csproj" />
+    </ItemGroup>
+
 </Project>
