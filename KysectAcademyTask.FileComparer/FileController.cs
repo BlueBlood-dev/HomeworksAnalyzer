@@ -3,7 +3,7 @@ using System.IO;
 
 namespace KysectAcademyTask.FileComparer
 {
-    public class FileController
+    public class FileController : IController
     {
         private string InputPath { get; }
         private string OutputPath { get; }

@@ -4,8 +4,7 @@
     {
         public static void Main(string[] args)
         {
-             FileController fileController = new ConfigReader().Read();
-             fileController.CompareFiles();
+             new DirectoryConfigReader().Read().CompareFiles();
         }
     }
 }
