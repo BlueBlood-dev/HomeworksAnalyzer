@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using KysectAcademyTask.FileComparer.Models;
 
 
 namespace KysectAcademyTask.FileComparer

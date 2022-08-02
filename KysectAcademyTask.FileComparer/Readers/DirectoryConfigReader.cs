@@ -1,28 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using KysectAcademyTask.FileComparer.Controllers;
+using KysectAcademyTask.FileComparer.Interfaces;
+using KysectAcademyTask.FileComparer.Selectors;
 using Microsoft.Extensions.Configuration;
 
 namespace KysectAcademyTask.FileComparer
 {
     public class DirectoryConfigReader : IReader
     {
-
         private List<string> GetBlackList(IConfigurationSection configurationSection)
         {
-           IEnumerable<IConfigurationSection> children = configurationSection.GetSection("BlackList").GetChildren();
-           List<string> list = new List<string>();
-           foreach (IConfigurationSection variable in children)
-           {
-               if (variable.Value is not null)
-               {
-                   list.Add(variable.Value);
-               }
-           }
+            IEnumerable<IConfigurationSection> children = configurationSection.GetSection("BlackList").GetChildren();
+            List<string> list = new List<string>();
+            foreach (IConfigurationSection variable in children)
+            {
+                if (variable.Value is not null)
+                {
+                    list.Add(variable.Value);
+                }
+            }
 
-           return list ?? throw new ArgumentNullException($"black list is empty");
+            return list ?? throw new ArgumentNullException($"black list is empty");
         }
-        
-        
+
+
         private List<string> GetWhiteList(IConfigurationSection configurationSection)
         {
             IEnumerable<IConfigurationSection> children = configurationSection.GetSection("WhiteList").GetChildren();
@@ -63,7 +66,8 @@ namespace KysectAcademyTask.FileComparer
 
         private List<string> GetExtensionsWhiteList(IConfigurationSection configurationSection)
         {
-            IEnumerable<IConfigurationSection> children = configurationSection.GetSection("ExtensionsWhiteList").GetChildren();
+            IEnumerable<IConfigurationSection> children =
+                configurationSection.GetSection("ExtensionsWhiteList").GetChildren();
             List<string> list = new List<string>();
             foreach (IConfigurationSection variable in children)
             {
@@ -78,38 +82,55 @@ namespace KysectAcademyTask.FileComparer
 
         private List<string> GetDirectoryBlackList(IConfigurationSection configurationSection)
         {
-            IEnumerable<IConfigurationSection> children = configurationSection.GetSection("DirectoryBlackList").GetChildren();
-            List<string> list = new List<string>();
-            foreach (IConfigurationSection variable in children)
-            {
-                if (variable.Value is not null)
-                {
-                    list.Add(variable.Value);
-                }
-            }
+            IEnumerable<IConfigurationSection> children =
+                configurationSection.GetSection("DirectoryBlackList").GetChildren();
+            List<string> list = new();
+            // foreach (IConfigurationSection variable in children)
+            // {
+            //     if (variable.Value is not null)
+            //     {
+            //         list.Add(variable.Value);
+            //     }
+            // }
+
+            IEnumerable<string> blackList = children
+                .Where(section => section.Value is not null)
+                .Select(section => section.Value!);
+            list.AddRange(blackList);
 
             return list ?? throw new ArgumentNullException($"directory black list is empty");
+        }
+
+        private string GetDataBaseUploadChoice(IConfigurationSection configurationSection)
+        {
+            return configurationSection.GetValue<string>("Answer") ??
+                   throw new ArgumentNullException($"answer is null");
         }
 
 
         public IController Read()
         {
-            IConfigurationRoot config = new ConfigurationBuilder().SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            IConfigurationRoot config = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json").Build();
             IConfigurationSection section = config.GetSection("InputAndPath") ??
                                             throw new ArgumentException("there is no such section");
-            
+
             string inputPath = GetInputPath(section);
             string algo = GetAlgo(section);
 
             section = config.GetSection("Report");
-            
+
             string output = GetOutput(section);
             string typeOfOutput = GetType(section);
-            
+
+            ISelector selector = new AppSettingsInputSelector();
+            IWriter writer = selector.ChooseTheOutputType(typeOfOutput);
+            IComparator comparator = selector.ChooseTheComparingAlgo(algo);
+
             section = config.GetSection("AuthorFilters") ??
                       throw new ArgumentException("AuthorFilter doesn't exist");
-            
+
             List<string> whiteList = GetWhiteList(section);
             List<string> blackList = GetBlackList(section);
 
@@ -118,9 +139,13 @@ namespace KysectAcademyTask.FileComparer
             List<string> extensionsWhiteList = GetExtensionsWhiteList(section);
             List<string> directoryBlackList = GetDirectoryBlackList(section);
 
+            section = config.GetSection("UploadDataBase") ??
+                      throw new ArgumentException("UploadDataBase field doesn't exist");
 
+            string logicChoice = GetDataBaseUploadChoice(section);
+            ISubmitsComparerLogic logic = selector.ChooseTheLogic(logicChoice);
 
-            return new DirectoryController(algo, inputPath, output, typeOfOutput, extensionsWhiteList,
+            return new DirectoryController(comparator, logic, inputPath, output, writer, extensionsWhiteList,
                 directoryBlackList, whiteList, blackList);
         }
     }

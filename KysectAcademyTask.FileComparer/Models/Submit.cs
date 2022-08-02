@@ -1,4 +1,4 @@
-﻿namespace KysectAcademyTask.FileComparer
+﻿namespace KysectAcademyTask.FileComparer.Models
 {
     public class Submit
     {
