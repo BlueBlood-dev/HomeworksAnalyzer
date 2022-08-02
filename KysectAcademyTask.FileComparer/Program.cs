@@ -1,6 +1,4 @@
-﻿using KysectAcademyTask.DatabaseLayer.Entities;
-
-namespace KysectAcademyTask.FileComparer
+﻿namespace KysectAcademyTask.FileComparer
 {
     
     internal static class Program
