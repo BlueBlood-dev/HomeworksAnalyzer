@@ -42,9 +42,7 @@ namespace KysectAcademyTask.FileComparer.Controllers
             _authorWhiteList = authorWhiteList;
             _authorBlackList = authorBlackList;
         }
-
-        private string GetSubmitPath(Submit submit) 
-            => Path.Combine(_inputPath, submit.GroupName, submit.StudentName, submit.HomeworkName, submit.SubmitName);
+        
 
         public void CompareFiles()
         {
@@ -53,24 +51,8 @@ namespace KysectAcademyTask.FileComparer.Controllers
             IFilter filter = new WhiteAndBlackListFilter();
             filter.GetSubmitsWithoutIgnoredStudents(submits, _authorBlackList);
             List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, _authorWhiteList);
-            SubmitsComparer comparer = new();
 
-            int amountOfCmp = submits.Count * whiteSubmits.Count;
-            int counter = 1;
-            
-            foreach (Submit whSubmit in whiteSubmits)
-            {
-                foreach (Submit submit in submits)
-                {
-                    if (whSubmit.HomeworkName.Equals(submit.HomeworkName) &&
-                        !whSubmit.StudentName.Equals(submit.StudentName))
-                    {
-                        comparer.CompareSubmits(whSubmit, submit, new(GetSubmitPath(whSubmit)),
-                            new DirectoryInfo(GetSubmitPath(submit)), _writer, _comparator, _outputPath);
-                    }
-                    Console.WriteLine($"{counter++}\\{amountOfCmp}");
-                }
-            }
+            _logic.ComparingProcess(submits,whiteSubmits,_comparator,_writer,_outputPath,_inputPath);
         }
     }
 }

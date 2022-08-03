@@ -4,7 +4,7 @@ using KysectAcademyTask.FileComparer.Interfaces;
 
 namespace KysectAcademyTask.FileComparer.Selectors
 {
-    public class AppSettingsInputSelector : ISelector
+    public class AppSettingsSelector : ISelector
     {
         public IComparator ChooseTheComparingAlgo(string comparingAlgo)
         {
@@ -30,8 +30,8 @@ namespace KysectAcademyTask.FileComparer.Selectors
         {
             return userAnswer.ToLower() switch
             {
-                "no" => new ComparingWithoutDatabase(),
-                "yes" => new ComparingWithDatabase(),
+                "no" => new ComparingWithoutDatabaseUpload(),
+                "yes" => new ComparingWithDatabaseUpload(),
                 _ => throw new ArgumentException("invalid user choice")
             };
         }

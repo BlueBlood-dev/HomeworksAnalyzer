@@ -124,7 +124,7 @@ namespace KysectAcademyTask.FileComparer
             string output = GetOutput(section);
             string typeOfOutput = GetType(section);
 
-            ISelector selector = new AppSettingsInputSelector();
+            ISelector selector = new AppSettingsSelector();
             IWriter writer = selector.ChooseTheOutputType(typeOfOutput);
             IComparator comparator = selector.ChooseTheComparingAlgo(algo);
 
