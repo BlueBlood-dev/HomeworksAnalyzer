@@ -6,8 +6,7 @@ namespace KysectAcademyTask.DatabaseLayer.Entities
     {
         public int Id { get; set; }
         public string HomeworkName { get; set;}
-        [ForeignKey("Student")] public string StudentId { get; set; }
-        
+        [ForeignKey("Student")] public int StudentId { get; set; }
         
     }
 }

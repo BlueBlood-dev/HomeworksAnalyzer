@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using KysectAcademyTask.DatabaseLayer;
+using KysectAcademyTask.DatabaseLayer.Entities;
 using KysectAcademyTask.FileComparer.Comparators;
 using KysectAcademyTask.FileComparer.Interfaces;
 using KysectAcademyTask.FileComparer.Models;
 using KysectAcademyTask.FileComparer.Selectors;
+using Microsoft.EntityFrameworkCore;
 
 namespace KysectAcademyTask.FileComparer.Controllers
 {
@@ -42,8 +45,37 @@ namespace KysectAcademyTask.FileComparer.Controllers
             _authorWhiteList = authorWhiteList;
             _authorBlackList = authorBlackList;
         }
-        
 
+        private void EnsureUniqueValuesProvided(List<Submit> submits)
+        {
+            using DataBaseContext db = new DataBaseBuilder().Build();
+            foreach (Submit submit in submits)
+            {
+                Student student = new()
+                {
+                    Name = submit.StudentName,
+                    GroupName = submit.GroupName
+                    //submissions List is missing 
+                };
+                if (db.Find<Student>(student) is null)
+                {
+                    db.Add(student);
+                }
+
+                Submission submission = new()
+                {
+                    HomeworkName = submit.HomeworkName,
+                    StudentId = db.Find<Student>(student)!.Id
+                };
+                if (db.Find<Submission>(submission) is null)
+                {
+                    db.Add(submission);
+                }
+            }
+            db.SaveChanges();
+            throw new NotImplementedException();
+        }
+        
         public void CompareFiles()
         {
             List<Submit> submits = new DirectoryResearcher().Research(_inputPath, _directoryBlackList) ??
@@ -51,8 +83,8 @@ namespace KysectAcademyTask.FileComparer.Controllers
             IFilter filter = new WhiteAndBlackListFilter();
             filter.GetSubmitsWithoutIgnoredStudents(submits, _authorBlackList);
             List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, _authorWhiteList);
-
-            _logic.ComparingProcess(submits,whiteSubmits,_comparator,_writer,_outputPath,_inputPath);
+            EnsureUniqueValuesProvided(submits);
+            _logic.ComparingProcess(submits, whiteSubmits, _comparator, _writer, _outputPath, _inputPath);
         }
     }
 }
