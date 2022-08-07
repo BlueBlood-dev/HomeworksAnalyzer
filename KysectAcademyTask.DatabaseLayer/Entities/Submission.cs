@@ -5,8 +5,17 @@ namespace KysectAcademyTask.DatabaseLayer.Entities
     public class Submission
     {
         public int Id { get; set; }
-        public string HomeworkName { get; set;}
-        [ForeignKey("Student")] public int StudentId { get; set; }
+        public string Name { get; set; }
         
+        public string HomeWorkName { get; set; }
+        
+        [ForeignKey("Student")] public int StudentId { get; set; }
+
+        public Submission(string name, int studentId, string homewWorkName)
+        {
+            HomeWorkName = homewWorkName;
+            Name = name;
+            StudentId = studentId;
+        }
     }
 }

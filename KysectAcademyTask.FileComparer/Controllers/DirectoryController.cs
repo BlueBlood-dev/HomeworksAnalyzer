@@ -46,35 +46,7 @@ namespace KysectAcademyTask.FileComparer.Controllers
             _authorBlackList = authorBlackList;
         }
 
-        private void EnsureUniqueValuesProvided(List<Submit> submits)
-        {
-            using DataBaseContext db = new DataBaseBuilder().Build();
-            foreach (Submit submit in submits)
-            {
-                Student student = new()
-                {
-                    Name = submit.StudentName,
-                    GroupName = submit.GroupName
-                    //submissions List is missing 
-                };
-                if (db.Find<Student>(student) is null)
-                {
-                    db.Add(student);
-                }
-
-                Submission submission = new()
-                {
-                    HomeworkName = submit.HomeworkName,
-                    StudentId = db.Find<Student>(student)!.Id
-                };
-                if (db.Find<Submission>(submission) is null)
-                {
-                    db.Add(submission);
-                }
-            }
-            db.SaveChanges();
-            throw new NotImplementedException();
-        }
+       
         
         public void CompareFiles()
         {
@@ -83,7 +55,6 @@ namespace KysectAcademyTask.FileComparer.Controllers
             IFilter filter = new WhiteAndBlackListFilter();
             filter.GetSubmitsWithoutIgnoredStudents(submits, _authorBlackList);
             List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, _authorWhiteList);
-            EnsureUniqueValuesProvided(submits);
             _logic.ComparingProcess(submits, whiteSubmits, _comparator, _writer, _outputPath, _inputPath);
         }
     }

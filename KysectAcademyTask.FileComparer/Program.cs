@@ -1,4 +1,6 @@
-﻿namespace KysectAcademyTask.FileComparer
+﻿using KysectAcademyTask.FileComparer.Readers;
+
+namespace KysectAcademyTask.FileComparer
 {
     
     internal static class Program

@@ -6,7 +6,7 @@ using KysectAcademyTask.FileComparer.Interfaces;
 using KysectAcademyTask.FileComparer.Selectors;
 using Microsoft.Extensions.Configuration;
 
-namespace KysectAcademyTask.FileComparer
+namespace KysectAcademyTask.FileComparer.Readers
 {
     public class DirectoryConfigReader : IReader
     {

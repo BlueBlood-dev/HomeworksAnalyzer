@@ -10,8 +10,12 @@ namespace KysectAcademyTask.DatabaseLayer.Entities
         public string Name { get; set; }
         
         public string GroupName { get; set; }
+        
 
-        public ICollection<Submission> Submissions { get; set; }
-
+        public Student(string name, string groupName)
+        {
+            Name = name;
+            GroupName = groupName;
+        }
     }
 }
