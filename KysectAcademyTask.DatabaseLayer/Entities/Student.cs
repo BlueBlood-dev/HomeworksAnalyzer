@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-namespace KysectAcademyTask.DatabaseLayer.Entities
+﻿namespace KysectAcademyTask.DatabaseLayer.Entities
 {
     public class Student
     {

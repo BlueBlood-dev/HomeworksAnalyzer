@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices.ComTypes;
 using KysectAcademyTask.DatabaseLayer;
 using KysectAcademyTask.DatabaseLayer.Entities;
@@ -12,27 +13,42 @@ namespace KysectAcademyTask.FileComparer
     {
         public int FindStudentId(string studentName,DataBaseContext db)
         {
-            foreach (var student in db.Student.ToList().Where(student => student.Name == studentName))
+            // foreach (Student student in db.Student.ToList().Where(student => student.Name == studentName))
+            // {
+            //     return student.Id;
+            // }
+           // Console.WriteLine(db.Student.ToList().Count);
+            foreach (Student student in db.Student.ToList())
             {
-                return student.Id;
+                if (student.Name == studentName)
+                    return student.Id;
             }
 
-            throw new Exception("Student's id wasn't found");
+            throw new Exception("student wasn't found");
         }
 
 
-        public void Initialize(IReadOnlyCollection<Submit> submits)
+        public void Initialize(List<Submit> submits,DataBaseContext db)
         {
-            using DataBaseContext db = new DataBaseBuilder().Build();
+            List<string> names = new();
             foreach (Submit submit in submits)
             {
-                var student = new Student(submit.StudentName, submit.GroupName);
-                db.Add(student);
+                if (!names.Contains(submit.StudentName))
+                {
+                    var student = new Student(submit.StudentName, submit.GroupName);
+                    db.Add(student);
+                    names.Add(submit.StudentName);
+                }
+                
             }
 
+            db.SaveChanges();
+
+            
+            
             foreach (Submit submit in submits)
             {
-                Submission submission = new Submission(submit.GroupName, FindStudentId(submit.StudentName,db),
+                Submission submission = new Submission(submit.SubmitName, FindStudentId(submit.StudentName,db),
                     submit.HomeworkName);
                 db.Add(submission);
             }

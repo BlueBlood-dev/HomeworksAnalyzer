@@ -11,15 +11,14 @@ namespace KysectAcademyTask.DatabaseLayer
         public IReadOnlyCollection<Student> Students { get; }
         public IReadOnlyCollection<ResultOfCompare> ResultsOfCompares { get; }
 
-        public DataBaseData()
+        public DataBaseData(DataBaseContext db)
         {
-            using DataBaseContext db = new DataBaseBuilder().Build();
-            Submissions = db.Submissions.Include("Student").ToList();
-            Students = db.Student.Include("Submission").ToList();
-            ResultsOfCompares = db.Results.Include("Submission").ToList();
+            Submissions = db.Submissions.ToList();
+            Students = db.Student.ToList();
+            ResultsOfCompares = db.Results.ToList();
         }
 
-        public bool CheckIfInited()
+        public bool CheckIfInitialized()
         {
             return Submissions is not null && Students is not null;
         }

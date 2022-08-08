@@ -11,9 +11,9 @@ namespace KysectAcademyTask.DatabaseLayer.Entities
         
         [ForeignKey("Student")] public int StudentId { get; set; }
 
-        public Submission(string name, int studentId, string homewWorkName)
+        public Submission(string name, int studentId, string homeWorkName)
         {
-            HomeWorkName = homewWorkName;
+            HomeWorkName = homeWorkName;
             Name = name;
             StudentId = studentId;
         }

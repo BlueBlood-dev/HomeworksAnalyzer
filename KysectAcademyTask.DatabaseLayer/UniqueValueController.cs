@@ -6,9 +6,9 @@ namespace KysectAcademyTask.DatabaseLayer
 {
     public class UniqueValueController
     {
-        public bool CheckIfResultExists(int firstSubmissionId, int secondSubmissionId)
+        public bool CheckIfResultExists(int firstSubmissionId, int secondSubmissionId,DataBaseContext db)
         {
-            return new DataBaseData().ResultsOfCompares.Any(s =>
+            return new DataBaseData(db).ResultsOfCompares.Any(s =>
                 s.FirstSubmitId == firstSubmissionId && s.SecondSubmitId == secondSubmissionId);
         }
         
