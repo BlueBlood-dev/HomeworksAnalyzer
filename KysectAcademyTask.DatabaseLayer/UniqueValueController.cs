@@ -8,7 +8,7 @@ namespace KysectAcademyTask.DatabaseLayer
     {
         public bool CheckIfResultExists(int firstSubmissionId, int secondSubmissionId,DataBaseContext db)
         {
-            return new DataBaseData(db).ResultsOfCompares.Any(s =>
+            return db.Results.ToList().Any(s =>
                 s.FirstSubmitId == firstSubmissionId && s.SecondSubmitId == secondSubmissionId);
         }
         
