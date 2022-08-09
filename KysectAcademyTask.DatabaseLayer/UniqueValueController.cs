@@ -1,6 +1,5 @@
-﻿using System;
-using System.Linq;
-using KysectAcademyTask.DatabaseLayer.Entities;
+﻿using System.Linq;
+
 
 namespace KysectAcademyTask.DatabaseLayer
 {

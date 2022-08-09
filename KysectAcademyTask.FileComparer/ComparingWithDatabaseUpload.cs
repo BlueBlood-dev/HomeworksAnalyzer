@@ -24,7 +24,7 @@ namespace KysectAcademyTask.FileComparer
              {
                  dataBaseInitializer.Initialize(submits,db);
              }
-
+             
              foreach (Submit whiteSubmit in whiteSubmits)
             {
                 foreach (Submit submit in submits)
@@ -32,8 +32,8 @@ namespace KysectAcademyTask.FileComparer
                     int firstStudentId = dataBaseInitializer.FindStudentId(whiteSubmit.StudentName, db);
                     int secondStudentId = dataBaseInitializer.FindStudentId(whiteSubmit.StudentName, db);
                     
-                    int firstSubmissionId = 0;
-                    int secondSubmissionId = 0;
+                    int firstSubmissionId = dataBaseInitializer.FindSubmissionId(firstStudentId,db);
+                    int secondSubmissionId = dataBaseInitializer.FindSubmissionId(secondStudentId,db);
 
                     if (!new UniqueValueController().CheckIfResultExists(firstSubmissionId, secondSubmissionId,db) &&
                         submit.HomeworkName == whiteSubmit.HomeworkName &&
@@ -48,6 +48,7 @@ namespace KysectAcademyTask.FileComparer
                     }
                 }
             }
+            Console.WriteLine("SAVING THE RESULT");
             new DataBaseSaver().Save(resultOfCompares, db);
         }
     }

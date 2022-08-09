@@ -2,8 +2,7 @@
 using System.IO;
 using KysectAcademyTask.FileComparer.Models;
 
-
-namespace KysectAcademyTask.FileComparer
+namespace KysectAcademyTask.FileComparer.FileSystemResearchers
 {
     public class DirectoryResearcher : IResearcher
     {

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices.ComTypes;
 using KysectAcademyTask.DatabaseLayer;
 using KysectAcademyTask.DatabaseLayer.Entities;
 using KysectAcademyTask.FileComparer.Models;
@@ -13,18 +11,22 @@ namespace KysectAcademyTask.FileComparer
     {
         public int FindStudentId(string studentName,DataBaseContext db)
         {
-            // foreach (Student student in db.Student.ToList().Where(student => student.Name == studentName))
-            // {
-            //     return student.Id;
-            // }
-           // Console.WriteLine(db.Student.ToList().Count);
-            foreach (Student student in db.Student.ToList())
+            foreach (Student student in db.Student.ToList().Where(student => student.Name == studentName))
             {
-                if (student.Name == studentName)
-                    return student.Id;
+                return student.Id;
             }
 
             throw new Exception("student wasn't found");
+        }
+
+        public int FindSubmissionId(int studentId, DataBaseContext db)
+        {
+            foreach (Submission submission in db.Submissions.ToList().Where(submission => submission.StudentId == studentId))
+            {
+                return submission.Id;
+            }
+
+            throw new Exception("submission wasn't found");
         }
 
 
@@ -46,10 +48,9 @@ namespace KysectAcademyTask.FileComparer
 
             
             
-            foreach (Submit submit in submits)
+            foreach (Submission submission in submits.Select(submit => new Submission(submit.SubmitName, FindStudentId(submit.StudentName,db),
+                submit.HomeworkName)))
             {
-                Submission submission = new Submission(submit.SubmitName, FindStudentId(submit.StudentName,db),
-                    submit.HomeworkName);
                 db.Add(submission);
             }
 
