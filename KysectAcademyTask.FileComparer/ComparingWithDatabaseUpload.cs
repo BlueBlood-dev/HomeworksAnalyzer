@@ -37,7 +37,7 @@ namespace KysectAcademyTask.FileComparer
                         submit.HomeworkName == whiteSubmit.HomeworkName &&
                         submit.StudentName != whiteSubmit.StudentName)
                     {
-                        double result = new SubmitsComparer().CompareSubmits(whiteSubmit, submit,
+                        double result = new SubmitsComparer().CompareSubmits(
                             new DirectoryInfo(new DirectorySubmitPathGetter().GetSubmitPath(whiteSubmit, inputPath)),
                             new DirectoryInfo(new DirectorySubmitPathGetter().GetSubmitPath(submit, inputPath)), writer,
                             comparator,

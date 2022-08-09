@@ -8,7 +8,7 @@ namespace KysectAcademyTask.FileComparer.Comparators
 {
     public class SubmitsComparer
     {
-        public double CompareSubmits(Submit first, Submit second, DirectoryInfo firstSubmitInfo,
+        public double CompareSubmits(DirectoryInfo firstSubmitInfo,
             DirectoryInfo secondSubmitInfo, IWriter writer, IComparator comparer, string outputPath)
         {
             List<double> compareResults = new();
