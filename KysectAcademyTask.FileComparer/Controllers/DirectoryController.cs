@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using KysectAcademyTask.DatabaseLayer;
-using KysectAcademyTask.DatabaseLayer.Entities;
-using KysectAcademyTask.FileComparer.Comparators;
 using KysectAcademyTask.FileComparer.FileSystemResearchers;
 using KysectAcademyTask.FileComparer.Interfaces;
 using KysectAcademyTask.FileComparer.Models;
-using KysectAcademyTask.FileComparer.Selectors;
-using Microsoft.EntityFrameworkCore;
 
 namespace KysectAcademyTask.FileComparer.Controllers
 {

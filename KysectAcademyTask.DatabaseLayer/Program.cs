@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using KysectAcademyTask.DatabaseLayer.Entities;
-
-namespace KysectAcademyTask.DatabaseLayer
+﻿namespace KysectAcademyTask.DatabaseLayer
 {
     internal static class Program
     {
