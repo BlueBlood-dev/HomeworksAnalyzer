@@ -10,26 +10,26 @@ public class ComparingWithDatabaseUpload : ISubmitsComparerLogic
 {
     public void ComparingProcess(List<Submit> submits, List<Submit> whiteSubmits, IComparator comparator,
         IWriter writer, string outputPath,
-        string inputPath)
+        string inputPath,DataBaseContext dataBase)
     {
-        using DataBaseContext db = new DataBaseBuilder().Build();
+       // using DataBaseContext db = new DataBaseBuilder().Build();
         var dataBaseInitializer = new DataBaseInitializer();
         ICollection<ResultOfCompare> resultOfCompares = new List<ResultOfCompare>();
-        if (db.Student.ToList().Count == 0 || db.Submissions.ToList().Count == 0)
-            dataBaseInitializer.Initialize(submits, db);
+        if (dataBase.Student.ToList().Count == 0 || dataBase.Submissions.ToList().Count == 0)
+            dataBaseInitializer.Initialize(submits, dataBase);
 
 
         foreach (Submit whiteSubmit in whiteSubmits)
         {
             foreach (Submit submit in submits)
             {
-                int firstStudentId = dataBaseInitializer.FindStudentId(whiteSubmit.StudentName, db);
-                int secondStudentId = dataBaseInitializer.FindStudentId(whiteSubmit.StudentName, db);
+                int firstStudentId = dataBaseInitializer.FindStudentId(whiteSubmit.StudentName, dataBase);
+                int secondStudentId = dataBaseInitializer.FindStudentId(whiteSubmit.StudentName, dataBase);
 
-                int firstSubmissionId = dataBaseInitializer.FindSubmissionId(firstStudentId, db);
-                int secondSubmissionId = dataBaseInitializer.FindSubmissionId(secondStudentId, db);
+                int firstSubmissionId = dataBaseInitializer.FindSubmissionId(firstStudentId, dataBase);
+                int secondSubmissionId = dataBaseInitializer.FindSubmissionId(secondStudentId, dataBase);
 
-                if (!new UniqueValueController().CheckIfResultExists(firstSubmissionId, secondSubmissionId, db) &&
+                if (!new UniqueValueController().CheckIfResultExists(firstSubmissionId, secondSubmissionId, dataBase) &&
                     submit.HomeworkName == whiteSubmit.HomeworkName &&
                     submit.StudentName != whiteSubmit.StudentName)
                 {
@@ -44,6 +44,6 @@ public class ComparingWithDatabaseUpload : ISubmitsComparerLogic
         }
 
         Console.WriteLine("SAVING THE RESULT");
-        new DataBaseSaver().Save(resultOfCompares, db);
+        new DataBaseSaver().Save(resultOfCompares, dataBase);
     }
 }

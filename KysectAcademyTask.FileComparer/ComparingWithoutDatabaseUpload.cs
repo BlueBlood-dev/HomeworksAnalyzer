@@ -10,7 +10,7 @@ namespace KysectAcademyTask.FileComparer;
 public class ComparingWithoutDatabaseUpload : ISubmitsComparerLogic
 {
     public void ComparingProcess(List<Submit> submits, List<Submit> whiteSubmits, IComparator comparator,
-        IWriter writer, string outputPath, string inputPath)
+        IWriter writer, string outputPath, string inputPath,DataBaseContext dataBase)
     {
         using DataBaseContext db = new DataBaseBuilder().Build();
         var dataBaseInitializer = new DataBaseInitializer();

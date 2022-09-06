@@ -11,7 +11,7 @@ public class DirectoryController : IController
 {
     private readonly DirectoryConfigurationData _configurationData;
 
-    private DataBaseContext _dataBaseContext;
+    private readonly DataBaseContext _dataBaseContext;
 
     public DirectoryController(DirectoryConfigurationData configurationData, DataBaseContext dataBaseContext)
     {
@@ -32,6 +32,6 @@ public class DirectoryController : IController
         List<Submit> whiteSubmits = filter.GetWhiteSubmits(submits, _configurationData.GetAuthorWhiteList());
         
         _configurationData.Logic.ComparingProcess(submits, whiteSubmits, _configurationData.Comparator,
-            _configurationData.Writer, _configurationData.OutputPath, _configurationData.InputPath);
+            _configurationData.Writer, _configurationData.OutputPath, _configurationData.InputPath,_dataBaseContext);
     }
 }
