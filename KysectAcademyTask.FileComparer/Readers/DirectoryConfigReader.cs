@@ -101,7 +101,7 @@ public class DirectoryConfigReader : IReader
     {
         IConfigurationRoot config = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json").Build();
+            .AddJsonFile("D:\\GitClone\\BlueBlood-dev\\KysectAcademyTask.FileComparer\\appsettings.json").Build();
         IConfigurationSection section = config.GetSection("InputAndPath") ??
                                         throw new ArgumentException("there is no such section");
 
