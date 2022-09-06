@@ -1,7 +1,6 @@
-﻿namespace KysectAcademyTask.FileComparer
+﻿namespace KysectAcademyTask.FileComparer.Interfaces;
+
+public interface IController
 {
-    public interface IController
-    {
-        void CompareFiles();
-    }
+    void CompareFiles();
 }

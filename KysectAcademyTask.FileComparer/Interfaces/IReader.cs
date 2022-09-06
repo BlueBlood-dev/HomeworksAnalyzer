@@ -1,7 +1,6 @@
-﻿namespace KysectAcademyTask.FileComparer
+﻿namespace KysectAcademyTask.FileComparer.Interfaces;
+
+public interface IReader
 {
-    public interface IReader
-    {
-        IController Read();
-    }
+    IController Read();
 }

@@ -1,4 +1,6 @@
-﻿namespace KysectAcademyTask.FileComparer
+﻿using KysectAcademyTask.FileComparer.Interfaces;
+
+namespace KysectAcademyTask.FileComparer
 {
     public class JsonWriter : IWriter
     {

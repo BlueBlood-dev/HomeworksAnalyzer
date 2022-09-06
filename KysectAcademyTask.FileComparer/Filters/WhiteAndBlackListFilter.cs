@@ -1,41 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using KysectAcademyTask.FileComparer.Interfaces;
 using KysectAcademyTask.FileComparer.Models;
 
-namespace KysectAcademyTask.FileComparer
+namespace KysectAcademyTask.FileComparer.Filters;
+
+public class WhiteAndBlackListFilter : IFilter
 {
-    public class WhiteAndBlackListFilter : IFilter
-    {
         
-        public List<Submit> GetWhiteSubmits(List<Submit> submits, List<string> authorWhiteList)
+    public List<Submit> GetWhiteSubmits(List<Submit> submits, List<string> authorWhiteList)
+    {
+        List<Submit> whiteSubmits = new();
+        foreach (Submit submit in submits)
         {
-            List<Submit> whiteSubmits = new();
-            foreach (Submit submit in submits)
+            if (authorWhiteList.Contains(submit.StudentName))
             {
-                if (authorWhiteList.Contains(submit.StudentName))
-                {
-                    whiteSubmits.Add(submit);
-                }
+                whiteSubmits.Add(submit);
             }
-
-            return whiteSubmits;
         }
 
-        public void  GetSubmitsWithoutIgnoredStudents(List<Submit> submits, List<string> authorBlackList)
-        {
-            List<int> toDeleteElements = new List<int>();
-            for (int i = 0; i < submits.Count; i++)
-            {
-                if (authorBlackList.Contains(submits[i].StudentName))
-                {
-                    toDeleteElements.Add(i);
-                }
-            }
+        return whiteSubmits;
+    }
 
-            foreach (int index in toDeleteElements)
+    public void  GetSubmitsWithoutIgnoredStudents(List<Submit> submits, List<string> authorBlackList)
+    {
+        var toDeleteElements = new List<int>();
+        for (int i = 0; i < submits.Count; i++)
+        {
+            if (authorBlackList.Contains(submits[i].StudentName))
             {
-                submits.RemoveAt(index);
+                toDeleteElements.Add(i);
             }
+        }
+
+        foreach (int index in toDeleteElements)
+        {
+            submits.RemoveAt(index);
+        }
             
-        }
     }
 }

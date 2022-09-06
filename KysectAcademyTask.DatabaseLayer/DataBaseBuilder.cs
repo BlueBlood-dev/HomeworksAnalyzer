@@ -1,13 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿namespace KysectAcademyTask.DatabaseLayer;
 
-namespace KysectAcademyTask.DatabaseLayer
+public class DataBaseBuilder : IDataBaseInitializer
 {
-    public class DataBaseBuilder : IDataBaseInitializer
+    public DataBaseContext Build()
     {
-        public DataBaseContext Build()
-        {
-            return new DataBaseContext(new SimpleDbContextOptionsGetter().GetProvidedOptions());
-        }
-        
+        return new DataBaseContext(new SimpleDbContextOptionsGetter().GetProvidedOptions());
     }
+        
 }

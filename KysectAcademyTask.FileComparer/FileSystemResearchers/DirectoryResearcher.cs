@@ -1,39 +1,39 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using KysectAcademyTask.FileComparer.Interfaces;
 using KysectAcademyTask.FileComparer.Models;
 
-namespace KysectAcademyTask.FileComparer.FileSystemResearchers
+namespace KysectAcademyTask.FileComparer.FileSystemResearchers;
+
+public class DirectoryResearcher : IResearcher
 {
-    public class DirectoryResearcher : IResearcher
+    private bool CheckIfDirectoryNotIgnored(List<string> directoryBlackList, string studentName, string groupName,
+        string homeworkName, string submitName)
     {
-        private bool CheckIfDirectoryNotIgnored(List<string> directoryBlackList, string studentName, string groupName,
-            string homeworkName, string submitName)
-        {
-            return !directoryBlackList.Contains(studentName) && !directoryBlackList.Contains(groupName) &&
-                   !directoryBlackList.Contains(homeworkName) && !directoryBlackList.Contains(submitName);
-        }
+        return !directoryBlackList.Contains(studentName) && !directoryBlackList.Contains(groupName) &&
+               !directoryBlackList.Contains(homeworkName) && !directoryBlackList.Contains(submitName);
+    }
 
-        public List<Submit> Research(string inputPath, List<string> directoryBlackList)
-        {
-            List<Submit> list = new List<Submit>();
-            DirectoryInfo groups = new DirectoryInfo(inputPath);
+    public List<Submit> Research(string inputPath, List<string> directoryBlackList)
+    {
+        var list = new List<Submit>();
+        var groups = new DirectoryInfo(inputPath);
 
-            foreach (DirectoryInfo group in groups.GetDirectories())
+        foreach (DirectoryInfo group in groups.GetDirectories())
+        {
+            foreach (DirectoryInfo students in group.GetDirectories())
             {
-                foreach (DirectoryInfo students in group.GetDirectories())
+                foreach (DirectoryInfo homeworks in students.GetDirectories())
                 {
-                    foreach (DirectoryInfo homeworks in students.GetDirectories())
+                    foreach (DirectoryInfo submits in homeworks.GetDirectories())
                     {
-                        foreach (DirectoryInfo submits in homeworks.GetDirectories())
-                        {
-                            if (CheckIfDirectoryNotIgnored(directoryBlackList, students.Name, group.Name,
+                        if (CheckIfDirectoryNotIgnored(directoryBlackList, students.Name, group.Name,
                                 homeworks.Name, submits.Name))
-                                list.Add(new Submit(group.Name, students.Name, homeworks.Name, submits.Name));
+                        {
+                            list.Add(new Submit(group.Name, students.Name, homeworks.Name, submits.Name));
                         }
                     }
                 }
             }
-            return list;
         }
+        return list;
     }
 }

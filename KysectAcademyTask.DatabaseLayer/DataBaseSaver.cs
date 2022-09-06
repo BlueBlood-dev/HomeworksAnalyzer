@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
-using KysectAcademyTask.DatabaseLayer.Entities;
+﻿using KysectAcademyTask.DatabaseLayer.Entities;
 
-namespace KysectAcademyTask.DatabaseLayer
+namespace KysectAcademyTask.DatabaseLayer;
+
+public class DataBaseSaver
 {
-    public class DataBaseSaver
+    public void Save(ICollection<ResultOfCompare> compares, DataBaseContext db)
     {
-        public void Save(ICollection<ResultOfCompare> compares, DataBaseContext db)
-        {
             
-                foreach (ResultOfCompare resultOfCompare in compares)
-                {
-                    db.Add(resultOfCompare);
-                }
-
-                db.SaveChanges();
+        foreach (ResultOfCompare resultOfCompare in compares)
+        {
+            db.Add(resultOfCompare);
         }
+
+        db.SaveChanges();
     }
 }

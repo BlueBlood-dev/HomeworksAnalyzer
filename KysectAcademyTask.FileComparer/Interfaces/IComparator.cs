@@ -1,9 +1,6 @@
-﻿namespace KysectAcademyTask.FileComparer
-{
-    public interface IComparator
-    {
-        double Compare(string sourceFile, string targetFile);
+﻿namespace KysectAcademyTask.FileComparer.Interfaces;
 
-        
-    }
+public interface IComparator
+{
+    double Compare(string sourceFile, string targetFile);
 }

@@ -1,10 +1,9 @@
-﻿namespace KysectAcademyTask.DatabaseLayer
+﻿namespace KysectAcademyTask.DatabaseLayer;
+
+internal static class Program
 {
-    internal static class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            DataBaseContext db = new DataBaseBuilder().Build();
-        }
+        DataBaseContext db = new DataBaseBuilder().Build();
     }
 }

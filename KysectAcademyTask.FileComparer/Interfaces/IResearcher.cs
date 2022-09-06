@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using KysectAcademyTask.FileComparer.Models;
+﻿using KysectAcademyTask.FileComparer.Models;
 
-namespace KysectAcademyTask.FileComparer
+namespace KysectAcademyTask.FileComparer.Interfaces;
+
+public interface IResearcher
 {
-    public interface IResearcher
-    {
-        List<Submit> Research(string inputPath, List<string> directoryBlackList);
-    }
+    List<Submit> Research(string inputPath, List<string> directoryBlackList);
 }

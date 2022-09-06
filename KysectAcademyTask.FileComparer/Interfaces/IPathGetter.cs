@@ -1,9 +1,8 @@
 ﻿using KysectAcademyTask.FileComparer.Models;
 
-namespace KysectAcademyTask.FileComparer.Interfaces
+namespace KysectAcademyTask.FileComparer.Interfaces;
+
+public interface IPathGetter
 {
-    public interface IPathGetter
-    {
-        string GetSubmitPath(Submit submit, string inputPath);
-    }
+    string GetSubmitPath(Submit submit, string inputPath);
 }

@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using KysectAcademyTask.FileComparer.Models;
+﻿using KysectAcademyTask.FileComparer.Models;
 
-namespace KysectAcademyTask.FileComparer
+namespace KysectAcademyTask.FileComparer.Interfaces;
+
+public interface IFilter
 {
-    public interface IFilter
-    {
-        List<Submit> GetWhiteSubmits(List<Submit> submits, List<string> authorWhiteList);
+    List<Submit> GetWhiteSubmits(List<Submit> submits, List<string> authorWhiteList);
 
-       void  GetSubmitsWithoutIgnoredStudents(List<Submit> submits, List<string> authorBlackList);
-    }
+    void  GetSubmitsWithoutIgnoredStudents(List<Submit> submits, List<string> authorBlackList);
 }
