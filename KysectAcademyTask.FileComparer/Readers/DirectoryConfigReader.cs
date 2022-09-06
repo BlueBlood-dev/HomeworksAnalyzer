@@ -1,5 +1,5 @@
-﻿using KysectAcademyTask.FileComparer.Controllers;
-using KysectAcademyTask.FileComparer.Interfaces;
+﻿using KysectAcademyTask.FileComparer.Interfaces;
+using KysectAcademyTask.FileComparer.Models;
 using KysectAcademyTask.FileComparer.Selectors;
 using Microsoft.Extensions.Configuration;
 
@@ -97,7 +97,7 @@ public class DirectoryConfigReader : IReader
     }
 
 
-    public IController Read()
+    public IConfigurationData Read()
     {
         IConfigurationRoot config = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -134,7 +134,7 @@ public class DirectoryConfigReader : IReader
         string logicChoice = GetDataBaseUploadChoice(section);
         ISubmitsComparerLogic logic = selector.ChooseTheLogic(logicChoice);
 
-        return new DirectoryController(comparator, logic, inputPath, output, writer, extensionsWhiteList,
+        return new DirectoryConfigurationData(comparator, logic, inputPath, output, writer, extensionsWhiteList,
             directoryBlackList, whiteList, blackList);
     }
 }

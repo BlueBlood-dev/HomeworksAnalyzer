@@ -1,6 +1,6 @@
 ﻿namespace KysectAcademyTask.FileComparer.Interfaces;
 
-public interface IReader
+public interface IConfigurationData
 {
-    IConfigurationData Read();
+    
 }

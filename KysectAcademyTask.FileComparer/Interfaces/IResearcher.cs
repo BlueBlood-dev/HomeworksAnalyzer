@@ -4,5 +4,5 @@ namespace KysectAcademyTask.FileComparer.Interfaces;
 
 public interface IResearcher
 {
-    List<Submit> Research(string inputPath, List<string> directoryBlackList);
+    List<Submit> Research(string inputPath, IReadOnlyCollection<string> directoryBlackList);
 }

@@ -6,7 +6,7 @@ namespace KysectAcademyTask.FileComparer.Filters;
 public class WhiteAndBlackListFilter : IFilter
 {
         
-    public List<Submit> GetWhiteSubmits(List<Submit> submits, List<string> authorWhiteList)
+    public List<Submit> GetWhiteSubmits(List<Submit> submits, IReadOnlyCollection<string> authorWhiteList)
     {
         List<Submit> whiteSubmits = new();
         foreach (Submit submit in submits)
@@ -20,7 +20,7 @@ public class WhiteAndBlackListFilter : IFilter
         return whiteSubmits;
     }
 
-    public void  GetSubmitsWithoutIgnoredStudents(List<Submit> submits, List<string> authorBlackList)
+    public void GetSubmitsWithoutIgnoredStudents(List<Submit> submits, IReadOnlyCollection<string> authorBlackList)
     {
         var toDeleteElements = new List<int>();
         for (int i = 0; i < submits.Count; i++)

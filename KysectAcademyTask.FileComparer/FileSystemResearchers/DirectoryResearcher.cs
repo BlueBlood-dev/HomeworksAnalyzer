@@ -12,7 +12,7 @@ public class DirectoryResearcher : IResearcher
                !directoryBlackList.Contains(homeworkName) && !directoryBlackList.Contains(submitName);
     }
 
-    public List<Submit> Research(string inputPath, List<string> directoryBlackList)
+    public List<Submit> Research(string inputPath, IReadOnlyCollection<string> directoryBlackList)
     {
         var list = new List<Submit>();
         var groups = new DirectoryInfo(inputPath);
@@ -25,7 +25,7 @@ public class DirectoryResearcher : IResearcher
                 {
                     foreach (DirectoryInfo submits in homeworks.GetDirectories())
                     {
-                        if (CheckIfDirectoryNotIgnored(directoryBlackList, students.Name, group.Name,
+                        if (CheckIfDirectoryNotIgnored(new List<string>(directoryBlackList), students.Name, group.Name,
                                 homeworks.Name, submits.Name))
                         {
                             list.Add(new Submit(group.Name, students.Name, homeworks.Name, submits.Name));

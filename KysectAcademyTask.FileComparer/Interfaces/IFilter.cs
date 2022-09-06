@@ -4,7 +4,7 @@ namespace KysectAcademyTask.FileComparer.Interfaces;
 
 public interface IFilter
 {
-    List<Submit> GetWhiteSubmits(List<Submit> submits, List<string> authorWhiteList);
+    List<Submit> GetWhiteSubmits(List<Submit> submits, IReadOnlyCollection<string> authorWhiteList);
 
-    void  GetSubmitsWithoutIgnoredStudents(List<Submit> submits, List<string> authorBlackList);
+    void GetSubmitsWithoutIgnoredStudents(List<Submit> submits, IReadOnlyCollection<string> authorBlackList);
 }
