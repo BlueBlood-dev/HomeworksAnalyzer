@@ -10,12 +10,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-        <!--  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">-->
-        <!--    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>-->
-        <!--  </PropertyGroup>-->
-
-        <!--  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">-->
-        <!--    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>-->
     </PropertyGroup>
 
     <ItemGroup>
