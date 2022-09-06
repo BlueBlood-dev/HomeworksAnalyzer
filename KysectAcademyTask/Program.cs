@@ -9,7 +9,8 @@ internal static class Program
 {
     public static void Main()
     {
-        new DirectoryController(new DirectoryConfigReader().Read() as DirectoryConfigurationData ?? throw new
+        var directoryController = new DirectoryController(new DirectoryConfigReader().Read() as DirectoryConfigurationData ?? throw new
             InvalidOperationException(), new DataBaseBuilder().Build());
+        directoryController.CompareFiles();
     }
 }
