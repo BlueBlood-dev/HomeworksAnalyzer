@@ -1,3 +1,15 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using KysectAcademyTask.DatabaseLayer;
+using KysectAcademyTask.FileComparer.Controllers;
+using KysectAcademyTask.FileComparer.Models;
+using KysectAcademyTask.FileComparer.Readers;
 
-Console.WriteLine("Hello, World!");
+namespace KysectAcademyTask;
+
+internal static class Program
+{
+    public static void Main()
+    {
+        new DirectoryController(new DirectoryConfigReader().Read() as DirectoryConfigurationData ?? throw new
+            InvalidOperationException(), new DataBaseBuilder().Build());
+    }
+}
