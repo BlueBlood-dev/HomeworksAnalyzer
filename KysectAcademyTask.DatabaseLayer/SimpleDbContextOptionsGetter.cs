@@ -8,5 +8,6 @@ public class SimpleDbContextOptionsGetter : IOptionsGetter
     {
         return new DbContextOptionsBuilder<DataBaseContext>()
             .UseSqlServer(new AppSettingsConnectionGetter().GetConnectionString()).Options;
+        
     }
 }

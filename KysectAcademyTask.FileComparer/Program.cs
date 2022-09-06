@@ -1,13 +1,11 @@
 ﻿using KysectAcademyTask.FileComparer.Readers;
 
-namespace KysectAcademyTask.FileComparer
+namespace KysectAcademyTask.FileComparer;
+
+internal static class Program
 {
-    
-    internal static class Program
+    public static void Main() 
     {
-        public static void Main(string[] args) 
-        {
-            new DirectoryConfigReader().Read().CompareFiles();
-        }
+        new DirectoryConfigReader().Read().CompareFiles();
     }
 }
