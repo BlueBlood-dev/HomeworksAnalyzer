@@ -1,25 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
-    </PropertyGroup>
 
-    <ItemGroup>
-        <None Update="appsettings.json">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-    </ItemGroup>
+<PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+</PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\KysectAcademyTask.FileComparer\KysectAcademyTask.FileComparer.csproj"/>
-    </ItemGroup>
+<ItemGroup>
+  <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
+<ItemGroup>
+  <ProjectReference Include="..\KysectAcademyTask.FileComparer\KysectAcademyTask.FileComparer.csproj"/>
+</ItemGroup>
+
 
 </Project>
