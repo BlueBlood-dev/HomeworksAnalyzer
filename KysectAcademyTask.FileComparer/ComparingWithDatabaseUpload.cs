@@ -12,7 +12,6 @@ public class ComparingWithDatabaseUpload : ISubmitsComparerLogic
         IWriter writer, string outputPath,
         string inputPath,DataBaseContext dataBase)
     {
-       // using DataBaseContext db = new DataBaseBuilder().Build();
         var dataBaseInitializer = new DataBaseInitializer();
         ICollection<ResultOfCompare> resultOfCompares = new List<ResultOfCompare>();
         if (dataBase.Student.ToList().Count == 0 || dataBase.Submissions.ToList().Count == 0)

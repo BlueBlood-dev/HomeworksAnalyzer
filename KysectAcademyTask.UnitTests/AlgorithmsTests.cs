@@ -10,8 +10,8 @@ public class AlgorithmsTests
     public void MultitudeAlgorithmTest()
     {
         IComparator comparator = new AppSettingsSelector().ChooseTheComparingAlgo("multitude algo");
-        double actualResult = comparator.Compare("D:\\GitClone\\BlueBlood-dev\\KysectAcademyTask.UnitTests\\NewFile1.txt",
-            "D:\\GitClone\\BlueBlood-dev\\KysectAcademyTask.UnitTests\\NewFile1.txt");
+        double actualResult = comparator.Compare("NewFile1.txt",
+            "NewFile1.txt");
         Assert.Equal(100,actualResult);
     }
 }

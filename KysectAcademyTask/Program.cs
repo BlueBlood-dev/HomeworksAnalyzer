@@ -12,5 +12,6 @@ internal static class Program
         var directoryController = new DirectoryController(new DirectoryConfigReader().Read() as DirectoryConfigurationData ?? throw new
             InvalidOperationException(), new DataBaseBuilder().Build());
         directoryController.CompareFiles();
+        
     }
 }
