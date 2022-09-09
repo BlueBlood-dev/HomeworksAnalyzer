@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace KysectAcademyTask.DatabaseLayer.Interfaces;
+namespace KysectAcademyTask.DatabaseLayer;
 
 public interface IOptionsGetter
 {
