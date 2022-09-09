@@ -1,7 +1,6 @@
-﻿namespace KysectAcademyTask.DatabaseLayer
+﻿namespace KysectAcademyTask.DatabaseLayer.Interfaces;
+
+public interface IConnectionGetter
 {
-    public interface IConnectionGetter
-    {
-        string GetConnectionString();
-    }
+    string GetConnectionString();
 }

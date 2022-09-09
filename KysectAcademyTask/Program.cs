@@ -1,4 +1,5 @@
 ﻿using KysectAcademyTask.DatabaseLayer;
+using KysectAcademyTask.DatabaseLayer.Interfaces;
 using KysectAcademyTask.FileComparer.Controllers;
 using KysectAcademyTask.FileComparer.Models;
 using KysectAcademyTask.FileComparer.Readers;

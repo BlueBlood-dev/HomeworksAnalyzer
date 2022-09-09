@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using KysectAcademyTask.DatabaseLayer.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace KysectAcademyTask.DatabaseLayer;
 

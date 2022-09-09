@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace KysectAcademyTask.DatabaseLayer
+namespace KysectAcademyTask.DatabaseLayer.Interfaces;
+
+public interface IOptionsGetter
 {
-    public interface IOptionsGetter
-    {
-        DbContextOptions<DataBaseContext> GetProvidedOptions();
-    }
+    DbContextOptions<DataBaseContext> GetProvidedOptions();
 }
