@@ -2,12 +2,12 @@
 
 namespace KysectAcademyTask.DatabaseLayer;
 
-public class SimpleDbContextOptionsGetter : IOptionsGetter
+public class SqlServerOptionsGetter : IOptionsGetter
 {
     public DbContextOptions<DataBaseContext> GetProvidedOptions()
     {
         return new DbContextOptionsBuilder<DataBaseContext>()
-            .UseSqlServer(new AppSettingsConnectionGetter().GetConnectionString()).Options;
+            .UseSqlServer(new AppSettingsSqlServerConnectionGetter().GetConnectionString()).Options;
         
     }
 }

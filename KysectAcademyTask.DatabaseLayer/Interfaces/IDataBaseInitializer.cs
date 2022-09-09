@@ -1,10 +1,6 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿namespace KysectAcademyTask.DatabaseLayer.Interfaces;
 
-namespace KysectAcademyTask.DatabaseLayer
+public interface IDataBaseInitializer
 {
-    public interface IDataBaseInitializer
-    {
-        DataBaseContext Build();
-    }
+    DataBaseContext Build(IOptionsGetter optionsGetter);
 }
